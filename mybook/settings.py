@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^f4gc5(c*a21rjo9^&czv_p3-3*oi2iiyukqbom9fy0_h+h_7@'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG","False").lower()=="true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -85,7 +86,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-DATABASES["default"]= dj_database_url.parse("postgresql://booklib_user:yNRgO0o2LnqgIbanOwUjkH6Ac5bw6pRh@dpg-cqogo93v2p9s73aps550-a.oregon-postgres.render.com/booklib")
+database_url=os.environ.get("DATABASE_URL")
+DATABASES["default"]= dj_database_url.parse(database_url)
 #
 
 
